@@ -87,6 +87,11 @@ public class Page<E> extends ArrayList<E> implements Closeable {
      */
     private boolean orderByOnly;
 
+    /**
+     * 自定义limit 语句位置
+     */
+    private boolean cusLimit;
+
     public Page() {
         super();
     }
@@ -373,7 +378,13 @@ public class Page<E> extends ArrayList<E> implements Closeable {
     public void setCountColumn(String countColumn) {
         this.countColumn = countColumn;
     }
+    public boolean isCusLimit() {
+        return cusLimit;
+    }
 
+    public void setCusLimit(boolean cusLimit) {
+        this.cusLimit = cusLimit;
+    }
     @Override
     public String toString() {
         return "Page{" +

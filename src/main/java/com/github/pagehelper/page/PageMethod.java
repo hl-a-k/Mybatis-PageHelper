@@ -103,6 +103,17 @@ public abstract class PageMethod {
     }
 
     /**
+     * 开始分页 （自定义limit位置）
+     *
+     * @param pageNum  页码
+     * @param pageSize 每页显示数量
+     */
+    public static <E> Page<E> startPageCusLimt(int pageNum, int pageSize) {
+        return  startPage(pageNum, pageSize, DEFAULT_COUNT, null, null, true);
+    }
+
+
+    /**
      * 开始分页
      *
      * @param pageNum  页码
@@ -136,9 +147,23 @@ public abstract class PageMethod {
      * @param pageSizeZero true且pageSize=0时返回全部结果，false时分页,null时用默认配置
      */
     public static <E> Page<E> startPage(int pageNum, int pageSize, boolean count, Boolean reasonable, Boolean pageSizeZero) {
+        return startPage(pageNum, pageSize, count, reasonable, pageSizeZero, false);
+    }
+
+    /**
+     * 开始分页
+     *
+     * @param pageNum      页码
+     * @param pageSize     每页显示数量
+     * @param count        是否进行count查询
+     * @param reasonable   分页合理化,null时用默认配置
+     * @param pageSizeZero true且pageSize=0时返回全部结果，false时分页,null时用默认配置
+     */
+    public static <E> Page<E> startPage(int pageNum, int pageSize, boolean count, Boolean reasonable, Boolean pageSizeZero, Boolean cusLimit) {
         Page<E> page = new Page<E>(pageNum, pageSize, count);
         page.setReasonable(reasonable);
         page.setPageSizeZero(pageSizeZero);
+        page.setCusLimit(cusLimit);
         //当已经执行过orderBy的时候
         Page<E> oldPage = getLocalPage();
         if (oldPage != null && oldPage.isOrderByOnly()) {

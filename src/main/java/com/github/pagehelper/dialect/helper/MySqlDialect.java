@@ -66,13 +66,17 @@ public class MySqlDialect extends AbstractHelperDialect {
 
     @Override
     public String getPageSql(String sql, Page page, CacheKey pageKey) {
+        String limitStr = " LIMIT ?, ? ";
+        if (page.getStartRow() == 0) {
+            limitStr = " LIMIT ? ";
+        }
+        // 使用replace 处理自定义limit语句位置
+        if(page.isCusLimit()) {
+            return sql.replace("__LIMIT__", limitStr);
+        }
         StringBuilder sqlBuilder = new StringBuilder(sql.length() + 14);
         sqlBuilder.append(sql);
-        if (page.getStartRow() == 0) {
-            sqlBuilder.append(" LIMIT ? ");
-        } else {
-            sqlBuilder.append(" LIMIT ?, ? ");
-        }
+        sqlBuilder.append(limitStr);
         return sqlBuilder.toString();
     }
 
